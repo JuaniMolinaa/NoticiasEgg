@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmnls:th="http://www.thymeleaf.org" xmnls:sec="http://www.thymeleaf.org/extras/spring/spring-security">
+
+    <head th:replace= "/fragments/head :: head" > </head>
+
+    <body>
+        <!-- HEADER -->
+        <header th:replace ="/fragments/header :: header" > </header>
+
+        <!-- COMIENZA CARGADO DE NOTICIA -->
+        <section>
+            <div>
+                <div class="container" id="carga-noticia">
+                    <h3>MODIFICAR USUARIO</h3>
+                </div>
+            </div>
+
+            <div class="mb-3 formulario">
+                <form th:action="@{/perfil/__${usuario.id}__}" method="POST" enctype="multipart/form-data" >
+
+                    <div class="mb-3">
+                        <label class="form-label">Nuevo Nombre</label>
+                        <input type="text" class="form-control espacio-texto" name="nombre" placeholder="Nombre" th:value="${nombre}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nuevo Email</label>
+                        <input type="email" class="form-control espacio-texto" name="email" placeholder="Email" th:value="${email}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Nueva Imagen</label>
+                        <input type="file" class="form-control espacio-texto" name="archivo">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Nueva Contraseña</label>
+                        <input type="password" class="form-control espacio-texto" name="password" placeholder="CONTRASEÑA" th:value="${password}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Repetir nueva contraseña</label>
+                        <input type="password" class="form-control espacio-texto" name="password2" placeholder="REPETIR CONTRASEÑA" th:value="${password2}">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="boton-formulario"> MODIFICAR </button>
+                </form>
+            </div>
+        </section>
+        <!-- FINALIZA CARGADO DE NOTICIA -->
+
+        <!-- RECIBE ERRORES -->
+        <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError">
+            <div class="card-body">
+                <h5 class="card-title">ERROR</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div th:if="${exito != null}" class="card text-white bg-danger mb-3 mensajeExito">
+            <div class="card-body">
+                <h5 class="card-title">Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    </body>
+
+</html>

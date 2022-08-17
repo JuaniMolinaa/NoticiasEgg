@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmnls:th="http://www.thymeleaf.org" xmnls:sec="http://www.thymeleaf.org/extras/spring/spring-security">
+
+    <head th:replace= "/fragments/head :: head" > </head>
+
+    <body>
+
+        <!-- HEADER -->
+        <header th:replace ="/fragments/header :: header" > </header>
+
+        <!-- LISTADO DE NOTICIAS -->
+        <div class="container m-5">
+            <table class="table table-light" >
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha de la Noticia</th>
+                        <th scope="col" sec:authorize="hasRole('ADMIN')" >Id de la Noticia</th>
+                        <th scope="col">Titulo de la Noticia</th>
+                        <th scope="col">Cuerpo de la Noticia</th>
+                        <th scope="col" sec:authorize="hasRole('ADMIN')" >Acciones</th>
+                    </tr>
+                </thead>
+                <tbody th:each="noticias : ${noticias}">
+                    <tr>
+                        <th scope="row" th:text="${noticias.alta}"></th>
+                        <th scope="row" sec:authorize="hasRole('ADMIN')" th:text="${noticias.id}"></th>
+                        <td th:text="${noticias.titulo}"></td>
+                        <td th:text="${noticias.cuerpo}"></td>
+                        <td>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/noticia/editar/__${noticias.id}__}">Editar</a>
+                        </td>
+                    </tr>
+                </tbody>
+        </div>
+
+        <!-- RECIBE ERRORES -->
+        <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError">
+            <div class="card-body">
+                <h5 class="card-title">ERROR</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div> 
+        </div>
+
+        <div th:if="${exito != null}" class="card text-white bg-danger mb-3 mensajeExito">
+            <div class="card-body">
+                <h5 class="card-title">Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div> 
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    </body>
+
+</html>
