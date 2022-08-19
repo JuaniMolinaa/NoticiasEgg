@@ -1,6 +1,7 @@
 package com.EggNoticias.Servicio;
 
 import com.EggNoticias.Entidades.Imagen;
+import com.EggNoticias.Entidades.Noticia;
 import com.EggNoticias.Enumeraciones.Rol;
 import com.EggNoticias.Entidades.Usuario;
 import com.EggNoticias.Excepciones.MiException;
@@ -118,9 +119,61 @@ public class UsuarioServicio implements UserDetailsService {
             return null;
         }
     }//cierra loadUserByUsername
-    
-   public Usuario getOne(String id){
+
+    public Usuario getOne(String id) {
         return usuarioRepositorio.getOne(id);
     }
-    
+
+    public void cambiarRol(String id) {
+
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Usuario usuario = respuesta.get();
+
+            if (usuario.getRol().equals(Rol.USER)) {
+
+                usuario.setRol(Rol.ADMIN);
+
+            } else if (usuario.getRol().equals(Rol.ADMIN)) {
+                usuario.setRol(Rol.USER);
+            }
+            usuarioRepositorio.save(usuario);
+        }
+    }//cierra cambiarRol
+
+    @Transactional
+    public void modificarUsuario(MultipartFile archivo, String idUsuario, String nombre, String email, String password, String password2) throws MiException {
+
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
+
+        if (respuesta.isPresent()) {
+            Usuario usuario = respuesta.get();
+
+            usuario.setNombre(nombre);
+            usuario.setEmail(email);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+            usuario.setRol(Rol.USER);
+
+            String idImagen = null;
+
+            if (usuario.getImagen() != null) {
+                idImagen = usuario.getImagen().getId();
+            }
+
+            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+
+            usuario.setImagen(imagen);
+
+            usuarioRepositorio.save(usuario);
+        }
+    }//cierra actualizar
+
+    public List<Usuario> listarUsuarios() {
+        List<Usuario> usuarios = new ArrayList();
+        usuarios = usuarioRepositorio.findAll();
+
+        return usuarios;
+    }//cierra listarNoticias
 }//cierra UsuarioServicio

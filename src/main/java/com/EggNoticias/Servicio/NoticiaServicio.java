@@ -23,7 +23,7 @@ public class NoticiaServicio {
         validarDatos(titulo, cuerpo);
 
         Noticia noticia = new Noticia();
-
+        
         noticia.setTitulo(titulo);
         noticia.setCuerpo(cuerpo);
         noticia.setAlta(new Date());

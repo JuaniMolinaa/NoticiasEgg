@@ -13,7 +13,7 @@
             <p th:if="${session.usuariosession != null}" th:text=" 'Hola '+ ${session.usuariosession.nombre} "></p>
 
             <a>
-                <img class="logo" th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="Foto Usuario">
+                <img class="triste" th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="Foto Usuario">
             </a>
         </section>
 

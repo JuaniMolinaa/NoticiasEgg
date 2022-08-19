@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class PortalControlador {
 
     @PostMapping("/registro")//localhost:8080:/registro
 
+    @Transactional
     public String registro(@RequestParam String nombre, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, ModelMap modelo, MultipartFile archivo) {
 
@@ -72,22 +74,22 @@ public class PortalControlador {
 
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/perfil")//localhost:8080:/perfil
-    public String perfil(ModelMap modelo, HttpSession session){
-        
+    public String perfil(ModelMap modelo, HttpSession session) {
+
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-        
+
         modelo.put("usuario", usuario);
         return "usuario_modificar.html";
-        
-    }
-    
+    }//cierra perfil
+
+    @Transactional
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/perfil/{id}")//localhost:8080:/perfil/id
-    public String actualizar(MultipartFile archivo, @PathVariable String id,@RequestParam String nombre,
-            @RequestParam String email,@RequestParam String password,@RequestParam String password2, ModelMap modelo){
+    public String actualizar(MultipartFile archivo, @PathVariable String id, @RequestParam String nombre,
+            @RequestParam String email, @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
 
         try {
-            usuarioServicio.actualizar(archivo,id, nombre, email, password, password2);
+            usuarioServicio.actualizar(archivo, id, nombre, email, password, password2);
             modelo.put("exito", "Usuario actualizado correctamente");
             return "inicio.html";
         } catch (MiException ex) {
@@ -96,6 +98,5 @@ public class PortalControlador {
             modelo.put("email", email);
             return "usuario_modificar.html";
         }
-    }
-    
+    }//cierra actualizar
 }
